@@ -1,0 +1,44 @@
+.main{
+
+    background-color: rgb(221, 237, 235);
+    margin-bottom: 10px;
+}
+
+#tagline {
+    font-family: 'Courgette', cursive;
+    font-size:1cm;
+    font-weight: bold;
+}
+a{
+    color: white;
+    text-decoration: none;
+}
+
+.btn{
+    background-color: #116466;
+    margin:10px;
+
+}
+.btn:hover{
+    background-color: grey;
+}
+.abt{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+.abt h1{
+    font-weight: bolder;
+    font-family: "Courgette";
+}
+.abt p{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: larger;
+    font-style: oblique;
+}
+.first{
+    margin-bottom: 5rem;
+
+}

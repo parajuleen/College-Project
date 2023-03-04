@@ -1,0 +1,13 @@
+#socialmedia{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.contact a{
+  text-decoration: none;
+  color:white
+}
+#footer{
+   position: fix;
+  bottom: 0;
+}
