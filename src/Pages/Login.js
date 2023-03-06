@@ -1,30 +1,30 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState,useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom';
 import Fprofile from './Fprofile';
 import Cprofile  from './Cprofile';
+import { Maincontext } from '../App';
 
-function Login(props) {
-const onLogin=props.onlogin
-const [loggedInUser, setLoggedInUser] = useState(null);
+function Login() {
 
-  const handleLogin = (userType) => {
-    setLoggedInUser(userType);
+const {loginStatus,userLogin,loggedInUser}=useContext(Maincontext)
 
-  };
+
 
 const [username, setUsername] = useState('freelancer');
   const [password, setPassword] = useState('password');
 
-  const verifyLogin = () => {
+  
 
-    // Validate user credentials 
+  const verifyLogin = () => {
+    
     if (username === 'client' && password === 'password') {
-      handleLogin('client');
+      userLogin('client');
     } else if (username === 'freelancer' && password === 'password') {
-      handleLogin('freelancer');
+      userLogin('freelancer');
     } else {
       alert('Invalid username or password!');
     }
+  
   };
   
 
@@ -100,7 +100,7 @@ const [username, setUsername] = useState('freelancer');
               </div>
               <div className="d-flex justify-content-center flex-column align-items-center ">
               <button className=' btn-primary w-25' style={{backgroundColor:"#116466"}} id="button" onClick={()=>{
-                onLogin()
+                loginStatus()
                 verifyLogin()}}>Login</button>
               <p>Don't Have an account? <Link to="/fsignup" className='text-decoration-none text-primary'>Register Here</Link></p>
               </div>

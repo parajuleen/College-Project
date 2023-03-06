@@ -12,21 +12,31 @@ import Browse from './Pages/Browse.js';
 import Header from './Components/Header.js';
 import Nav from './Components/Nav.js';
 
-
+export const Maincontext=React.createContext()
 
 
 function App() {
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
- const handleLogin=()=>{
+ const loginStatus=()=>{
   setIsLoggedIn(true)
- }
+
+  }
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const userLogin = (userType) => {
+    console.log(userType)
+    setLoggedInUser(userType);
+  };
+  
+
   return (
    <>
+   <Maincontext.Provider value={{loginStatus,userLogin,loggedInUser}} >
     {isLoggedIn ?<Nav/>:<Header/>}
    
   <Routes >
     <Route path='/' exact element={<Home/>}/>
-    <Route path='/login' exact element={<Login onlogin={handleLogin} />}/>
+    <Route path='/login' exact element={<Login />}/>
     <Route path='/fsignup' exact element={<FreelancerSignUp/>}/>
     <Route path='/signup' exact element={<Signup/>}/>
     <Route path='/fprofile' exact element={<Fprofile/>}/>
@@ -35,7 +45,7 @@ function App() {
     <Route path='/post' exact element={<Post/>}/> 
     <Route path='/*' exact element={<Home/>}/>
   </Routes>
-  
+  </Maincontext.Provider>
    </>
   );
 }
