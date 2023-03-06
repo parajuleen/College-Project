@@ -1,16 +1,16 @@
 import React from 'react';
 import { useState } from 'react';
 import { BrowserRouter, Route, Routes, Link} from 'react-router-dom'
-import Home from './Pages/Home.js'
-import Login from './Pages/Login.js'
-import Signup from './Pages/Signup.js';
-import FreelancerSignUp from "./Pages/Freelancesign.js"
-import Fprofile from './Pages/Fprofile.js'
-import Cprofile from './Pages/Cprofile.js'
-import Post from './Pages/Post.js';
-import Browse from './Pages/Browse.js';
-import Header from './Components/Header.js';
-import Nav from './Components/Nav.js';
+import Home from './Pages/Home.jsx'
+import Login from './Pages/Login.jsx'
+import Signup from './Pages/Signup.jsx';
+import FreelancerSignUp from "./Pages/Freelancesign.jsx"
+import Fprofile from './Pages/Fprofile.jsx'
+import Cprofile from './Pages/Cprofile.jsx'
+import Post from './Pages/Post.jsx';
+import Browse from './Pages/Browse.jsx';
+import Header from './Components/Header.jsx';
+import Nav from './Components/Nav.jsx';
 
 
 
