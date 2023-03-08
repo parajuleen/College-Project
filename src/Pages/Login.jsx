@@ -1,17 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Link } from 'react-router-dom';
-import Fprofile from './Fprofile';
 import Cprofile from './Cprofile';
 import { Maincontext } from '../App';
 import { userapi } from '../api/config.js';
+import Freelancer from './Freelancer';
 
 function Login() {
 
     const { loginStatus, userLogin, loggedInUser, setToken, token } = useContext(Maincontext)
-
-
-
-
 
 
     const [formData, setFormData] = useState({
@@ -29,18 +25,25 @@ function Login() {
         }))
 
     }
+
     const handleSubmit = async (event) => {
+
         event.preventDefault();
+
+    
         // Here you can handle the submission of the form
         try {
             let result = await userapi.post("/login", formData);
             let token = result.data.token
             setToken(token)
             userLogin('freelancer')
+            loginStatus()
             console.log(`logged in as user with ${token}`)
         } catch (err) {
-            console.log(err)
+            alert(err)
+            
         }
+       
 
 
     }
@@ -70,7 +73,7 @@ function Login() {
     return (
         <>
             {loggedInUser ? (
-                loggedInUser === 'client' ? <Cprofile /> : <Fprofile />) : (
+                loggedInUser === 'client' ? <Cprofile /> : <Freelancer />) : (
                 <>
                     <div className="container my-5 h-50" >
                         <div className="row justify-content-center ">
@@ -96,7 +99,7 @@ function Login() {
                                                 <label htmlFor="remember" className="form-label">Remember Me</label>
                                             </div>
                                             <div className="d-flex justify-content-center flex-column align-items-center ">
-                                                <button type="submit" className=' btn-primary w-25' style={{ backgroundColor: "#116466" }} id="button">Login</button>
+                                                <button type="submit" className=' btn-primary w-25' style={{ backgroundColor: "#116466" }} id="button" >Login</button>
                                                 <p>Don't Have an account? <Link to="/fsignup" className='text-decoration-none text-primary'>Register Here</Link></p>
                                             </div>
                                         </form>

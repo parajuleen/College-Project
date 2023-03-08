@@ -4,5 +4,9 @@ export const apiBase = "http://localhost:4000"
 export const  userapi = axios.create({
         baseURL: `${apiBase}/api/v1/user`,
     });
+ export const  clientapi = axios.create({
+        baseURL: `${apiBase}/api/v1/org`,
+    });
+
 
 
