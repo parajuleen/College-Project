@@ -27,11 +27,12 @@ function App() {
     console.log(userType)
     setLoggedInUser(userType);
   };
-  
+ 
+  const [token,setToken]  = useState(null);
 
   return (
    <>
-   <Maincontext.Provider value={{loginStatus,userLogin,loggedInUser}} >
+   <Maincontext.Provider value={{loginStatus,userLogin,loggedInUser,token,setToken}} >
     {isLoggedIn ?<Nav/>:<Header/>}
    
   <Routes >

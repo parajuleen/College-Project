@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Login from './Login';
+import {apiBase,userapi} from "../api/config.js";
 
 function FreelancerSignUp() {
 
@@ -34,9 +35,24 @@ const handleInputChange = (event) => {
     }));
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log("handling submit")
+    if (!formIsValid()) {
+        console.log("invalid form quiting...")
+        return
+    }
     // Here you can handle the submission of the form
+      try {
+        let result = await userapi.post("/create",formData);
+        console.log(result)
+      } catch(e) {
+          console.log("Error occured",e);
+      }
+    
+    
+
+
   }
   function formIsValid() {
     const errors = {};
@@ -124,7 +140,7 @@ const handleInputChange = (event) => {
                     className="btn-primary w-25"
                     style={{ backgroundColor: '#116466' }}
                     id="button"
-                    onClick={handleSignup}
+                    onClick={handleSubmit}
                   >
                     Sign Up
                   </button>
