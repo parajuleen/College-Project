@@ -12,10 +12,13 @@ import Header from './Components/Header.jsx';
 import Nav from './Components/Nav.jsx';
 import Freelancer from './Pages/Freelancer.jsx';
 
+
 export const Maincontext=React.createContext()
 
 
 function App() {
+
+
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
  const loginStatus=()=>{
@@ -23,6 +26,7 @@ function App() {
 
   }
   const [loggedInUser, setLoggedInUser] = useState(null);
+
   const userLogin = (userType) => {
     console.log(userType)
     setLoggedInUser(userType);
@@ -32,7 +36,9 @@ function App() {
 
   return (
    <>
-   <Maincontext.Provider value={{loginStatus,userLogin,loggedInUser,token,setToken}} >
+   <Maincontext.Provider value={{loginStatus,userLogin,loggedInUser,token,setToken,setIsLoggedIn,setLoggedInUser}} >
+
+    
     {isLoggedIn ?<Nav/>:<Header/>}
    
   <Routes >

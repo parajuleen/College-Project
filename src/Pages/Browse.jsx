@@ -1,9 +1,10 @@
 import React from 'react'
+import Dummy from '../Components/Dummy'
 
 function Browse() {
   return (
     <div>
-      <h1>This section can be use by Freelancer</h1>
+      <Dummy/>
     </div>
   )
 }

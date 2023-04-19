@@ -9,6 +9,13 @@ function Login() {
 
     const { loginStatus, userLogin, loggedInUser, setToken, token } = useContext(Maincontext)
 
+    const [passwordVisible, setPasswordVisible] = useState(false);
+
+    const handleTogglePassword = () => {
+        setPasswordVisible((prev) => !prev);
+    };
+
+
 
     const [formData, setFormData] = useState({
         email: '',
@@ -29,21 +36,21 @@ function Login() {
     const handleSubmit = async (event) => {
 
         event.preventDefault();
-
-    
         // Here you can handle the submission of the form
         try {
             let result = await userapi.post("/login", formData);
             let token = result.data.token
+            let userType=result.data.type
             setToken(token)
             userLogin('freelancer')
-            loginStatus()
+            // userLogin(userType)  //sets user as freelancer
+            loginStatus()  //sets login status as true 
             console.log(`logged in as user with ${token}`)
         } catch (err) {
             alert(err)
-            
+
         }
-       
+
 
 
     }
@@ -89,18 +96,51 @@ function Login() {
                                                 <input type="text" className="form-control" id="email" name="email" value={formData.value} onChange={handleInputChange} />
                                                 {errors.email && <div className="text-danger">{errors.email}</div>}
                                             </div>
+
                                             <div className="mb-4">
-                                                <label htmlFor="password" className="form-label">Password</label>
-                                                <input type="password" className="form-control" id="password" name="password" value={formData.value} onChange={handleInputChange} />
+                                                <label htmlFor="password" className="form-label">
+                                                    Password
+                                                </label>
+                                                <div className="input-group align-items-center">
+                                                    <input
+                                                        type={passwordVisible ? "text" : "password"}
+                                                        className="form-control"
+                                                        id="password"
+                                                        name="password"
+                                                        value={formData.value}
+                                                        onChange={handleInputChange}
+
+
+                                                    />
+
+                                                    <button
+                                                        className="btn"
+                                                        type="button"
+                                                        onClick={handleTogglePassword}
+                                                        style={{ backgroundColor: "grey" }}
+                                                    >
+                                                        {passwordVisible ? (
+                                                            <i className="bi bi-eye-slash" ></i>
+                                                        ) : (
+                                                            <i className="bi bi-eye" ></i>
+                                                        )}
+                                                    </button>
+
+                                                </div>
                                                 {errors.password && <div className="text-danger">{errors.password}</div>}
                                             </div>
+
+
+
                                             <div className="mb-4">
                                                 <input type="checkbox" className="form-check-input" id="remember" />
                                                 <label htmlFor="remember" className="form-label">Remember Me</label>
                                             </div>
                                             <div className="d-flex justify-content-center flex-column align-items-center ">
                                                 <button type="submit" className=' btn-primary w-25' style={{ backgroundColor: "#116466" }} id="button" >Login</button>
-                                                <p>Don't Have an account? <Link to="/fsignup" className='text-decoration-none text-primary'>Register Here</Link></p>
+                                                <p>Don't Have an account?Sign Up as <Link to="/fsignup" className='text-decoration-none text-primary'>Freelancer/</Link> <Link to="/signup" className='text-decoration-none text-primary'>Client</Link>
+
+                                                </p>
                                             </div>
                                         </form>
                                     </div>

@@ -19,7 +19,7 @@ function Home() {
             </p>
             <button className='btn'>
               <Link to="/fsignup" >Join As Freelancer</Link></button>
-            <button className='btn btn-primary '> <Link to="/signup" >Join As Client</Link></button>
+            <button className='btn '> <Link to="/signup" >Join As Client</Link></button>
           </div>
             <div className="col abt">
               <img src={img2} alt="firstimage" width="500px" height="500px"/>

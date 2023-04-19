@@ -1,9 +1,11 @@
 import React from 'react'
-import Nav from '../Components/Nav'
+import Jobs from '../Components/Createjob'
 function Post() {
   return (
     <div>
-      <h1>This page can be used by Client</h1>
+      <>
+      <Jobs/>
+      </>
     </div>
   )
 }
