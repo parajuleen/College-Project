@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 // import Header from '../Components/Header';
 import Login from './Login';
+import {clientapi} from '../api/config';
 
 function Signup() {
 
@@ -53,20 +54,9 @@ function Signup() {
       form.append("email", formData.email);
       form.append("password", formData.password);
       form.append("logo", formData.logo);
-      fetch("http://localhost:3001/signup", {
-        method: "POST",
-        body: form,
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-
-        })
-        .catch((error) => {
-          console.error(errors);
-          // show error message to user
-        });
-
+      clientapi.post('/create',form);
+      
+       
     }
     else {
       alert('Fill up the requirements');
