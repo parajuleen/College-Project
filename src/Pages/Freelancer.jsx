@@ -1,9 +1,13 @@
 import React from 'react'
-import { useState } from 'react';
+import {useState,useContext ,useEffect} from 'react';
+import {signedin,statics} from '../api/config';
+import {Maincontext} from '../App';
+
+const skills = ['React', 'JavaScript', 'HTML', 'CSS', 'Digital Marketing','SEO', 'Graphics Designing', 'Content Writing', 'Social Media Managing','SQL','Oracle','MongoDb','Data Entry','ios Development','Python','Docker','AWS'];
 
 function Freelancer() {
   const [editable, isEditable] = useState(true)
-
+const { loginStatus, userLogin, loggedInUser, setToken, token } = useContext(Maincontext);
   const setEditable = () => {
     isEditable(false)
   }
@@ -17,10 +21,28 @@ function Freelancer() {
     contact:'',
     bio: '',
     photo: '',
-    skills: ['React', 'JavaScript', 'HTML', 'CSS', 'Digital Marketing','SEO', 'Graphics Designing', 'Content Writing', 'Social Media Managing','SQL','Oracle','MongoDb','Data Entry','ios Development','Python','Docker','AWS'],
     selectedSkills: [],
     experiences:''
   });
+
+    useEffect(() => {
+    // Fetch user profile data after login
+    const fetchUserProfile = async () => {
+      try {
+        if (token) {
+          const response = await signedin(token).get('api/v1/user/profile')
+          console.log(response.data)
+            if (response.data.filled) {
+            setUser(response.data);
+            setEditable();
+            }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUserProfile();
+  }, []);
 
   function handleInputChange(event) {
     const { name, value } = event.target;
@@ -32,14 +54,15 @@ function Freelancer() {
 
   function handlePhotoChange(event) {
     const file = event.target.files[0];
-    const reader = new FileReader();
+    setUser(prevUser => ({...prevUser,photo: file}))
+    /*const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
       setUser(prevUser => ({
         ...prevUser,
         photo: reader.result
       }));
-    };
+    };*/
   }
 
   function handleSkillsChange(event) {
@@ -60,6 +83,22 @@ function Freelancer() {
   function handleSubmit(event) {
     event.preventDefault();
     // handle form submission
+    console.log(user)
+    const form = new FormData();
+    form.append('contact',user.contact);
+    form.append('bio',user.bio);
+    form.append('photo',user.photo);
+    form.append('skills',user.selectedSkills);
+    form.append('experiences',user.experiences);
+    console.log(form)
+    if (loggedInUser == 'freelancer') {
+       let user = signedin(token);
+       user.post('/api/v1/user/profile',form)
+    } else {
+        alert("Must sign in as freelancer")
+    }
+    
+
   }
 
   return (
@@ -69,7 +108,7 @@ function Freelancer() {
           <div className="text-center">
             <div className="mb-3">
               {user.photo ? (
-                <img src={user.photo} alt="Profile" className="img-fluid rounded-circle" style={{ width: '200px', height: '200px' }} />
+                <img src={`${statics}/${user.photo}`} alt="Profile" className="img-fluid rounded-circle" style={{ width: '200px', height: '200px' }} />
               ) : (
                 <i className="bi bi-person-circle" style={{ fontSize: '200px'}}></i>
               )}
@@ -79,6 +118,7 @@ function Freelancer() {
                 <input
                   type="file"
                   id="photo"
+                  name='photo'
                   accept="image/*"
                   onChange={handlePhotoChange}
                   className="form-control"
@@ -121,7 +161,7 @@ function Freelancer() {
                     Skills
                   </label>
                   <div className="skills-container" style={{ columns: 3 }}>
-                  {user.skills.map((skill) => (
+                  {skills.map((skill) => (
                     <div key={skill}>
                       <input type="checkbox" id={skill} name={skill} value={skill} checked={user.selectedSkills.includes(skill)} onChange={handleSkillsChange} />
                       <label htmlFor={skill}>{skill}</label>
@@ -136,7 +176,7 @@ function Freelancer() {
   <textarea id="experiences" placeholder="If any.."name="experiences" value={user.experiences} onChange={handleInputChange} className="form-control" />
 </div>
 
-                <button type="submit" className="btn btn-primary" onClick={setEditable}>
+                <button type="submit" className="btn btn-primary" onClick={(event)=>{setEditable();handleSubmit(event);}}>
                   Save
                 </button>
               </form>
