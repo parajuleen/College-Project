@@ -1,9 +1,10 @@
 import React from 'react'
-import { useState } from 'react';
-
+import { useState,useContext,useEffect } from 'react';
+import {Maincontext} from '../App';
+import {statics,signedin} from '../api/config';
 function Cprofile() {
   const [editable, isEditable] = useState(true)
-
+  const { loginStatus, userLogin, loggedInUser, setToken, token } = useContext(Maincontext);
   const setEditable = () => {
     isEditable(false)
   }
@@ -19,6 +20,25 @@ function Cprofile() {
     photo: '',
     
   });
+   useEffect(() => {
+    // Fetch user profile data after login
+    const fetchUserProfile = async () => {
+      try {
+        if (token) {
+          const response = await signedin(token).get('api/v1/org/profile')
+          console.log(response.data)
+            if (response.data.filled) {
+            setUser(response.data);
+            setEditable();
+            }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUserProfile();
+  }, []);
+
 
   function handleInputChange(event) {
     const { name, value } = event.target;
@@ -30,14 +50,15 @@ function Cprofile() {
 
   function handlePhotoChange(event) {
     const file = event.target.files[0];
-    const reader = new FileReader();
+    setUser(prev => ({...prev,photo: file}))
+   /* const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
       setUser(prevUser => ({
         ...prevUser,
         photo: reader.result
       }));
-    };
+    };*/
   }
 
   
@@ -45,8 +66,21 @@ function Cprofile() {
   function handleSubmit(event) {
     event.preventDefault();
     // handle form submission
-    
-
+    console.log(user)
+    const form = new FormData();
+    form.append('name',user.name);
+    form.append('email',user.email);
+    form.append('contact',user.contact);
+    form.append('logo',user.photo);
+    form.append('about',user.bio)
+    console.log(form)
+    if (loggedInUser == 'client') {
+       let user = signedin(token);
+       user.post('/api/v1/org/profile',form)
+    } else {
+        alert("Must sign in as client")
+    }
+ 
 
 
   }
@@ -58,7 +92,7 @@ function Cprofile() {
           <div className="text-center">
             <div className="mb-3">
               {user.photo ? (
-                <img src={user.photo} alt="Profile" className="img-fluid rounded-circle" style={{ width: '200px', height: '200px' }} />
+                <img src={`${statics}/${user.photo}`} alt="Profile" className="img-fluid rounded-circle" style={{ width: '200px', height: '200px' }} />
               ) : (
                 <i className="bi bi-person-circle" style={{ fontSize: '200px'}}></i>
               )}
@@ -104,7 +138,7 @@ function Cprofile() {
                   </label>
                   <textarea id="bio" name="bio" value={user.bio} onChange={handleInputChange} className="form-control" />
                 </div>
-  <button type="submit" className="btn btn-primary" onClick={setEditable}>
+  <button type="submit" className="btn btn-primary" onClick={(event)=>{setEditable();handleSubmit(event)}}>
                   Save
                 </button>
               </form>
