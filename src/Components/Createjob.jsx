@@ -3,7 +3,7 @@ import './Createjob.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {signedin} from '../api/config';
 import {Maincontext} from '../App';
-
+import image1 from "../Assets/jobform.png"
 
   const skills = ['React', 'JavaScript', 'HTML', 'CSS', 'Digital Marketing','SEO', 'Graphics Designing', 'Content Writing', 'Social Media Managing','SQL','Oracle','MongoDb','Data Entry','Python','Docker','AWS']
 
@@ -14,7 +14,7 @@ function Jobs() {
   const [budget, setBudget] = useState('');
   const [editingJobPosting, setEditingJobPosting] = useState(null)
   const [jobPostings, setJobPostings] = useState([]);
-  const [showForm, setShowForm] = useState(false);
+  // const [showForm, setShowForm] = useState(false);
   const [jobId,setJobId] = useState(null);
 
   const { loginStatus, userLogin, loggedInUser, setToken, token } = useContext(Maincontext);
@@ -76,7 +76,7 @@ function Jobs() {
     setRequiredSkills([]);
     setBudget('');
     setJobId(null);
-    setShowForm(false)
+    // setShowForm(false)
   }
 
   const handleEdit = (index) => {
@@ -90,11 +90,11 @@ function Jobs() {
     setRequiredSkills(jobPosting.skills);
     setBudget(jobPosting.budget);
     setJobId(jobPosting._id);
-    setShowForm(true)
+    // setShowForm(true)
 
   }
   const handleBtnClick=()=>{
-    setShowForm(!showForm);
+    // setShowForm(!showForm);
   }
 
  const handleSkillChange = (e) => {
@@ -115,13 +115,11 @@ function Jobs() {
   return (
 
     <div className="container">
-  <header>
-    <h1>Job Posting Form</h1>
-  </header>
+    <h1 className='d-flex justify-content-center'>Job Posting Form</h1>
+  
   <main>
-    <div className="row">
+    <div className="row" style={{backgroundColor:'#379683'}}>
 
-     { showForm && (
       
       <div className="col-md-6">
         <form className="job-form" onSubmit={handleSubmit}>
@@ -147,31 +145,30 @@ function Jobs() {
 
           <div className="mb-3">
             <label htmlFor="requiredSkills" className="form-label">Required Skills:</label>
-            <input type="text" id="requiredSkills" name="requiredSkills" className="form-control" value={requiredSkills.join(', ')} onChange={(event) => setRequiredSkills(event.target.value)} readOnly  />
+            <textarea id="requiredSkills" name="requiredSkills" className="form-control" value={requiredSkills.join(', ')} onChange={(event) => setRequiredSkills(event.target.value)} readOnly  />
           </div>
 
           <div className="mb-3">
             <label htmlFor="budget" className="form-label">Budget:</label>
             <div className="input-group">
-              <span className="input-group-text">$</span>
+              <span className="input-group-text">Rs</span>
               <input type="number" id="budget" name="budget" className="form-control" value={budget} onChange={(event) => setBudget(event.target.value)} required />
             </div>
           </div>
 
           <button type="submit" className="btn btn-primary" >Post Job</button>
         </form>
-      </div>)}
-    
+      </div>
+      <div className="col-md-6">
+            <img src={image1} alt='form' style={{width:"500px",height:"500px"}}/>
+          </div>
+    </div>
   
-      
-    { !showForm && (<div className="col-lg">
-      <button type="button" className="btn btn-primary" id="display" onClick={handleBtnClick}>Post New Jobs</button>
-      </div>)}
-      
      
-      <div className="col-lg-12">
+      <div className="col-md">
+        <h2>Posted Jobs</h2>
         {jobPostings.length > 0 ? (
-          <div className="row row-cols-1 row-cols-md-2 g-4">
+          <div className="row row-cols-1 row-cols-md-3 g-3">
             {jobPostings.map((jobPosting, index) => (
               <div className="col" key={index}>
                 <div className="card h-100">
@@ -191,7 +188,7 @@ function Jobs() {
         )}
       </div>
     
-    </div>
+    
   </main>
 </div>
 
