@@ -3,10 +3,14 @@ import './Createjob.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {signedin} from '../api/config';
 import {Maincontext} from '../App';
+
+
+  const skills = ['React', 'JavaScript', 'HTML', 'CSS', 'Digital Marketing','SEO', 'Graphics Designing', 'Content Writing', 'Social Media Managing','SQL','Oracle','MongoDb','Data Entry','Python','Docker','AWS']
+
 function Jobs() {
   const [jobTitle, setJobTitle] = useState('');
   const [jobDescription, setJobDescription] = useState('');
-  const [requiredSkills, setRequiredSkills] = useState('');
+  const [requiredSkills, setRequiredSkills] = useState([]);
   const [budget, setBudget] = useState('');
   const [editingJobPosting, setEditingJobPosting] = useState(null)
   const [jobPostings, setJobPostings] = useState([]);
@@ -37,7 +41,7 @@ function Jobs() {
     const newJobPosting = {
       title:jobTitle,
       description:jobDescription,
-      skills:[requiredSkills],
+      skills:requiredSkills,
       budget,
     };
 
@@ -69,7 +73,7 @@ function Jobs() {
     
     setJobTitle('');
     setJobDescription('');
-    setRequiredSkills('');
+    setRequiredSkills([]);
     setBudget('');
     setJobId(null);
     setShowForm(false)
@@ -92,6 +96,20 @@ function Jobs() {
   const handleBtnClick=()=>{
     setShowForm(!showForm);
   }
+
+ const handleSkillChange = (e) => {
+    const skill = e.target.value;
+    const isChecked = e.target.checked;
+
+    if (isChecked) {
+      //setFormData({ ...formData, selectedSkills: [...formData.selectedSkills, skill] });
+        setRequiredSkills(skills=>[...skills,skill])
+    } else {
+     // setFormData({ ...formData, selectedSkills: formData.selectedSkills.filter(selectedSkill => selectedSkill !== skill) });
+      setRequiredSkills(skills=>skills.filter(selected=>selected!==skill))
+    }
+  }
+
 
 
   return (
@@ -116,10 +134,20 @@ function Jobs() {
             <label htmlFor="jobDescription" className="form-label">Job Description:</label>
             <textarea id="jobDescription" name="jobDescription" className="form-control" value={jobDescription} onChange={(event) => setJobDescription(event.target.value)} required />
           </div>
+            <div className="skills-container" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gridGap: '20px', marginBottom: '10px' }}>
+            {skills.map((skill,index) => (
+
+              <div key={index} className='skill-item' style={{ display: 'flex', alignItems: 'center', marginRight: '20px' }}>
+                <label htmlFor={skill} style={{ fontSize: '16px', marginRight: '5px' }}>{skill}</label>
+                <input type="checkbox" id={skill} name={skill} value={skill} checked={requiredSkills.includes(skill)} onChange={handleSkillChange} />
+                
+              </div>
+            ))}
+            </div>
 
           <div className="mb-3">
             <label htmlFor="requiredSkills" className="form-label">Required Skills:</label>
-            <input type="text" id="requiredSkills" name="requiredSkills" className="form-control" value={requiredSkills} onChange={(event) => setRequiredSkills(event.target.value)} required />
+            <input type="text" id="requiredSkills" name="requiredSkills" className="form-control" value={requiredSkills.join(', ')} onChange={(event) => setRequiredSkills(event.target.value)} readOnly  />
           </div>
 
           <div className="mb-3">
@@ -150,7 +178,7 @@ function Jobs() {
                   <div className="card-body">
                     <h3 className="card-title">{jobPosting.title}</h3>
                     <p className="card-text"><strong>Description:</strong> {jobPosting.description}</p>
-                    <p className="card-text"><strong>Skills:</strong> {jobPosting.skills}</p>
+                    <p className="card-text"><strong>Skills:</strong> {jobPosting.skills.join(', ')}</p>
                     <p className="card-text"><strong>Budget:</strong> ${jobPosting.budget}</p>
                     <button type="button" className="btn btn-primary" onClick={() => handleEdit(index)}>Edit</button>
                   </div>
