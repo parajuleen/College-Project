@@ -10,7 +10,7 @@ function Cprofile() {
   }
   const changeValue = () => {
     isEditable(true)
-  }
+  } 
 
   const [user, setUser] = useState({
     name: '',
