@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState,useContext,useEffect } from 'react';
 import './Createjob.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import {signedin} from '../api/config';
+import {Maincontext} from '../App';
 function Jobs() {
   const [jobTitle, setJobTitle] = useState('');
   const [jobDescription, setJobDescription] = useState('');
@@ -9,41 +10,83 @@ function Jobs() {
   const [budget, setBudget] = useState('');
   const [editingJobPosting, setEditingJobPosting] = useState(null)
   const [jobPostings, setJobPostings] = useState([]);
-  const [showForm, setShowForm] = useState(false)
+  const [showForm, setShowForm] = useState(false);
+  const [jobId,setJobId] = useState(null);
 
-  const handleSubmit = (event) => {
+  const { loginStatus, userLogin, loggedInUser, setToken, token } = useContext(Maincontext);
+  useEffect(() => {
+    // Fetch user profile data after login
+    const fetchAllJobs = async () => {
+      try {
+        if (token) {
+          const response = await signedin(token).get('api/v1/job/all')
+          console.log(response.data)
+          if (response.data) {
+              setJobPostings(response.data.jobs)
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+        fetchAllJobs()
+  }, []);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const newJobPosting = {
-      jobTitle,
-      jobDescription,
-      requiredSkills,
-      budget
+      title:jobTitle,
+      description:jobDescription,
+      skills:[requiredSkills],
+      budget,
     };
 
+    let user = signedin(token);
+    console.log(user,token)
     if(editingJobPosting === null){
+      try {
+
+      await user.post('/api/v1/job/create',newJobPosting)
+      } catch (err) {
+          alert(err);
+          console.log(err)
+      }
       setJobPostings([...jobPostings, newJobPosting]);
     }else{
       const updatedJobPostings = [...jobPostings];
+      newJobPosting._id = jobId;
       updatedJobPostings[editingJobPosting] = newJobPosting;
+      console.log("Editing",newJobPosting)
+      try {
+      await user.post(`/api/v1/job/update/${newJobPosting._id}`,newJobPosting)
+      } catch(err) {
+          console.log(err)
+      }
       setJobPostings(updatedJobPostings);
       setEditingJobPosting(null); 
     }
+
     
     setJobTitle('');
     setJobDescription('');
     setRequiredSkills('');
     setBudget('');
+    setJobId(null);
     setShowForm(false)
   }
 
   const handleEdit = (index) => {
     // set editing state and populate form inputs with job posting details
+    console.log('editing ',index);
     setEditingJobPosting(index);
     const jobPosting = jobPostings[index];
-    setJobTitle(jobPosting.jobTitle);
-    setJobDescription(jobPosting.jobDescription);
-    setRequiredSkills(jobPosting.requiredSkills);
+    console.log('Job ',jobPosting);
+    setJobTitle(jobPosting.title);
+    setJobDescription(jobPosting.description);
+    setRequiredSkills(jobPosting.skills);
     setBudget(jobPosting.budget);
+    setJobId(jobPosting._id);
+    setShowForm(true)
 
   }
   const handleBtnClick=()=>{
@@ -105,9 +148,9 @@ function Jobs() {
               <div className="col" key={index}>
                 <div className="card h-100">
                   <div className="card-body">
-                    <h3 className="card-title">{jobPosting.jobTitle}</h3>
-                    <p className="card-text"><strong>Description:</strong> {jobPosting.jobDescription}</p>
-                    <p className="card-text"><strong>Skills:</strong> {jobPosting.requiredSkills}</p>
+                    <h3 className="card-title">{jobPosting.title}</h3>
+                    <p className="card-text"><strong>Description:</strong> {jobPosting.description}</p>
+                    <p className="card-text"><strong>Skills:</strong> {jobPosting.skills}</p>
                     <p className="card-text"><strong>Budget:</strong> ${jobPosting.budget}</p>
                     <button type="button" className="btn btn-primary" onClick={() => handleEdit(index)}>Edit</button>
                   </div>
