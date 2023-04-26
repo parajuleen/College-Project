@@ -4,10 +4,9 @@ import {Maincontext} from '../App';
 const Dummy = () => {
     let {token} = useContext(Maincontext);
     const [jobs, setJobs] = useState([]);
-    useEffect(async () => {
+    useEffect(() => {
         let fetchJobs = async ()  => {
             try {
-                1
             let result = await signedin(token).get("api/v1/recommend");
             setJobs(result.data.jobs);
             console.log(result.data.jobs);
@@ -16,7 +15,7 @@ const Dummy = () => {
                 alert(err)
             }
         }
-        await fetchJobs();
+         fetchJobs();
 
     },[])
       
