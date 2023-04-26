@@ -33,10 +33,15 @@ const Dummy = () => {
                 {/* Posted by: <Link to={`/clients/${job.clientId}`}>{job.clientName}</Link> (<a href={`mailto:${job.clientEmail}`} className="text-primary">{job.clientEmail}</a>) */}
             </h6>
                 <h6 className="card-subtitle mb-2 text-muted">
-                  {job.clientName} (<a href={`mailto:${job.org.email}`} className="text-primary">{job.org.email}</a>)
+                 {job.org.email}
                 </h6>
                 <p className="card-text">{job.description}</p>
                 <p className="card-text">Budget : <strong>Rs {job.budget}</strong></p>
+                <p className="card-text">Required Skills :{job.skills.join(',')}</p>
+                <button 
+                onClick={() =>
+                  window.location.href = `mailto:${job.org.Email}`
+                 }>Apply</button>
               </div>
             </div>
           </div>
