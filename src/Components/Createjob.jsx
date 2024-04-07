@@ -14,10 +14,9 @@ function Jobs() {
   const [budget, setBudget] = useState('');
   const [editingJobPosting, setEditingJobPosting] = useState(null)
   const [jobPostings, setJobPostings] = useState([]);
-  // const [showForm, setShowForm] = useState(false);
   const [jobId,setJobId] = useState(null);
 
-  const { loginStatus, userLogin, loggedInUser, setToken, token } = useContext(Maincontext);
+  const {  token } = useContext(Maincontext);
   useEffect(() => {
     // Fetch user profile data after login
     const fetchAllJobs = async () => {
@@ -93,19 +92,17 @@ function Jobs() {
     // setShowForm(true)
 
   }
-  const handleBtnClick=()=>{
-    // setShowForm(!showForm);
-  }
+  
 
  const handleSkillChange = (e) => {
     const skill = e.target.value;
     const isChecked = e.target.checked;
 
     if (isChecked) {
-      //setFormData({ ...formData, selectedSkills: [...formData.selectedSkills, skill] });
+      
         setRequiredSkills(skills=>[...skills,skill])
     } else {
-     // setFormData({ ...formData, selectedSkills: formData.selectedSkills.filter(selectedSkill => selectedSkill !== skill) });
+     
       setRequiredSkills(skills=>skills.filter(selected=>selected!==skill))
     }
   }
@@ -176,7 +173,7 @@ function Jobs() {
                     <h3 className="card-title">{jobPosting.title}</h3>
                     <p className="card-text"><strong>Description:</strong> {jobPosting.description}</p>
                     <p className="card-text"><strong>Skills:</strong> {jobPosting.skills.join(', ')}</p>
-                    <p className="card-text"><strong>Budget:</strong> ${jobPosting.budget}</p>
+                    <p className="card-text"><strong>Budget:</strong> Rs{jobPosting.budget}</p>
                     <button type="button" className="btn btn-primary" onClick={() => handleEdit(index)}>Edit</button>
                   </div>
                 </div>

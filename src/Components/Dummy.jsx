@@ -29,18 +29,18 @@ const Dummy = () => {
               <div className="card-body">
                 <h5 className="card-title">{job.title}</h5>
                 <h6 className="card-subtitle mb-2 text-muted">
-                Posted by: {job.org.name}
+                Posted by: {job.org?.name}
                 {/* Posted by: <Link to={`/clients/${job.clientId}`}>{job.clientName}</Link> (<a href={`mailto:${job.clientEmail}`} className="text-primary">{job.clientEmail}</a>) */}
             </h6>
                 <h6 className="card-subtitle mb-2 text-muted">
-                 {job.org.email}
+                 {job.org?.email}
                 </h6>
                 <p className="card-text">{job.description}</p>
                 <p className="card-text">Budget : <strong>Rs {job.budget}</strong></p>
                 <p className="card-text">Required Skills :{job.skills.join(',')}</p>
                 <button 
                 onClick={() =>
-                  window.location.href = `mailto:${job.org.Email}`
+                  window.location.href = `mailto:${job.org?.email}`
                  }>Apply</button>
               </div>
             </div>

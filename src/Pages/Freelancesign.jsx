@@ -4,9 +4,9 @@ import { apiBase, userapi } from "../api/config.js";
 
 function FreelancerSignUp() {
 
-  const navigate = useNavigate();
+ 
 
-  // const [display,setDisplay]=useState(false)
+
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const handleTogglePassword = () => {
@@ -46,8 +46,7 @@ function FreelancerSignUp() {
     } catch (e) {
       console.log("Error occured", e);
     }
-    // setDisplay(true);
-    navigate('/login')
+    ('/login')
 
   }
 
@@ -79,7 +78,7 @@ function FreelancerSignUp() {
 
   return (
     <>
-      {/* {display ? <Login />: */}
+      
       <>
         <div className="h-50 my-5">
           <div className="row justify-content-center">
@@ -176,7 +175,6 @@ function FreelancerSignUp() {
           </div>
         </div>
       </>
-      {/* } */}
     </>
   );
 }
